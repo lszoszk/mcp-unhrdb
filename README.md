@@ -14,6 +14,11 @@ query the corpus natively.
 
 Companion to the [UNHRD search interface](https://lszoszk.github.io/generalcomments/).
 
+> **Try it instantly — no token, no deployment.** The server ships pointed at
+> the live public API, so `npm install` and the Claude Desktop config below
+> are all you need to start querying the corpus. (Self-hosting your own
+> token-gated route is optional — see [deploy/RUNBOOK.md](deploy/RUNBOOK.md).)
+
 ## Tools
 
 | Tool | Description |
