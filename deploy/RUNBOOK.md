@@ -70,7 +70,7 @@ In `claude_desktop_config.json`, add `env` to the unhrdb server:
 ```json
 "unhrdb": {
   "command": "node",
-  "args": ["/Users/lszoszk/Desktop/mcp-unhrdb/src/index.js"],
+  "args": ["/ABSOLUTE/PATH/TO/mcp-unhrdb/src/index.js"],
   "env": {
     "UNHRDB_API_BASE": "https://150.254.115.204/unhrdb-mcp/api",
     "UNHRDB_API_KEY": "YOUR_MCP_TOKEN_HERE"

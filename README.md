@@ -73,11 +73,25 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "unhrdb": {
       "command": "node",
-      "args": ["/Users/lszoszk/Desktop/mcp-unhrdb/src/index.js"]
+      "args": ["/ABSOLUTE/PATH/TO/mcp-unhrdb/src/index.js"]
     }
   }
 }
 ```
+
+Replace `/ABSOLUTE/PATH/TO/` with the directory where you cloned this repo
+(e.g. the output of `pwd` from inside it).
+
+### Claude Code
+
+```bash
+claude mcp add-json -s user unhrdb \
+  '{"command":"node","args":["/ABSOLUTE/PATH/TO/mcp-unhrdb/src/index.js"]}'
+```
+
+Use `-s user` for all your projects, or `-s local` for the current one. To
+point at a self-hosted token-gated route, add an `env` block:
+`{"UNHRDB_API_BASE":"https://<host>/unhrdb-mcp/api","UNHRDB_API_KEY":"<token>"}`.
 
 Restart Claude Desktop; the two tools appear under the 🔌 menu.
 
