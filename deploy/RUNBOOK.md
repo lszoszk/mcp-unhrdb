@@ -23,13 +23,13 @@ it is the credential that authorises MCP traffic.
 From this folder on the laptop:
 
 ```bash
-scp deploy/mcp_ratelimit.conf amuvmuser@150.254.115.204:/tmp/mcp_ratelimit.conf
+scp deploy/mcp_ratelimit.conf <user>@<your-vm-host>:/tmp/mcp_ratelimit.conf
 ```
 
 ## 2. Install the rate-limit zone + token map (sudo)
 
 ```bash
-ssh amuvmuser@150.254.115.204
+ssh <user>@<your-vm-host>
 sudo cp /tmp/mcp_ratelimit.conf /etc/nginx/conf.d/mcp_ratelimit.conf
 ```
 
@@ -57,10 +57,10 @@ If `nginx -t` fails, DO NOT reload. Restore: `sudo cp /etc/nginx/sites-enabled/d
 
 ```bash
 # No / wrong key -> 401
-curl -sk -o /dev/null -w "%{http_code}\n" "https://150.254.115.204/unhrdb-mcp/api/stats"
+curl -sk -o /dev/null -w "%{http_code}\n" "https://<your-host>/unhrdb-mcp/api/stats"
 # With key -> 200
 curl -sk -H "X-API-Key: YOUR_MCP_TOKEN_HERE" \
-  -o /dev/null -w "%{http_code}\n" "https://150.254.115.204/unhrdb-mcp/api/stats"
+  -o /dev/null -w "%{http_code}\n" "https://<your-host>/unhrdb-mcp/api/stats"
 ```
 
 ## 6. Point the MCP server at the hardened route
@@ -72,7 +72,7 @@ In `claude_desktop_config.json`, add `env` to the unhrdb server:
   "command": "node",
   "args": ["/ABSOLUTE/PATH/TO/mcp-unhrdb/src/index.js"],
   "env": {
-    "UNHRDB_API_BASE": "https://150.254.115.204/unhrdb-mcp/api",
+    "UNHRDB_API_BASE": "https://<your-host>/unhrdb-mcp/api",
     "UNHRDB_API_KEY": "YOUR_MCP_TOKEN_HERE"
   }
 }
