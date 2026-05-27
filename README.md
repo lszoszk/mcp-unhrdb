@@ -30,6 +30,17 @@ Every result is a **verbatim** UN paragraph with its signature and paragraph
 number — no paraphrase, no synthesised text — so answers stay citable to the
 original UN document.
 
+## Two transports
+
+| Transport | Entry | Use it for |
+|---|---|---|
+| **stdio** | `src/index.js` (`npm start`) | Claude Code, Claude Desktop — the client spawns it locally |
+| **HTTP** (Streamable HTTP) | `src/http.js` (`npm run start:http`) | Remote clients — Claude Cowork, claude.ai, the connector registry — reach it at a URL |
+
+Local clients can't add a URL and remote clients can't spawn a local process,
+so which transport you need depends on the client. See
+[Remote / HTTP hosting](#remote--http-hosting) for the URL setup.
+
 ## Requirements
 
 - Node.js ≥ 18
@@ -94,6 +105,28 @@ point at a self-hosted token-gated route, add an `env` block:
 `{"UNHRDB_API_BASE":"https://<host>/unhrdb-mcp/api","UNHRDB_API_KEY":"<token>"}`.
 
 Restart Claude Desktop; the two tools appear under the 🔌 menu.
+
+## Remote / HTTP hosting
+
+Remote clients (Claude Cowork, claude.ai, the connector registry) connect to a
+**URL**, not a local process — so the server has to be hosted. The HTTP entry
+(`src/http.js`) serves the same two tools over MCP's Streamable HTTP transport.
+
+Run it with Docker (host networking, so it reaches a co-located UNHRDB API on
+`127.0.0.1:8002` and listens on `127.0.0.1:8004`):
+
+```bash
+MCP_AUTH_TOKEN=<your-token> docker compose up -d --build
+curl -s http://127.0.0.1:8004/health        # {"status":"ok",…}
+```
+
+Front it with TLS + a public path. The repo ships an nginx block at
+[`deploy/unhrdb-mcp-rpc.location.conf`](deploy/unhrdb-mcp-rpc.location.conf)
+that exposes it at `https://<host>/unhrdb-mcp-rpc/mcp`. Clients authenticate
+with `Authorization: Bearer <MCP_AUTH_TOKEN>`.
+
+Add that URL as a custom remote connector where your client supports one. The
+endpoint is stateless (POST `/mcp`); `GET`/`DELETE` return 405.
 
 ## Notes & limits
 

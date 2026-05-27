@@ -1,0 +1,23 @@
+# Self-host the HTTP (remote) MCP server.
+#
+#   MCP_AUTH_TOKEN=<token> docker compose up -d --build
+#
+# Uses host networking so the container reaches a co-located UNHRDB API on
+# 127.0.0.1:8002 and binds the MCP server on 127.0.0.1:8004 (front it with
+# nginx for TLS + a public path). Set MCP_AUTH_TOKEN to require a bearer
+# token from clients; leave unset if the proxy gates the route.
+services:
+  mcp-unhrdb-http:
+    build: .
+    image: mcp-unhrdb-http:latest
+    container_name: mcp-unhrdb-http
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - HOST=127.0.0.1
+      - PORT=8004
+      - UNHRDB_API_BASE=${UNHRDB_API_BASE:-http://127.0.0.1:8002/api}
+      - UNHRDB_INSECURE_TLS=${UNHRDB_INSECURE_TLS:-0}
+      - MCP_AUTH_TOKEN=${MCP_AUTH_TOKEN:-}
+    mem_limit: 256m
+    mem_reservation: 64m
