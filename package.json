@@ -1,7 +1,7 @@
 {
   "name": "mcp-unhrdb",
-  "version": "0.2.0",
-  "description": "MCP server for the UN Human Rights Database — paragraph-level search over Treaty Body General Comments, jurisprudence and Special Procedures reports.",
+  "version": "0.3.0",
+  "description": "MCP server for two UN human-rights corpora: paragraph-level search over Treaty Body General Comments, jurisprudence and Special Procedures reports, plus the UHRI dataset of ~267k recommendations addressed to States.",
   "type": "module",
   "bin": {
     "mcp-unhrdb": "src/index.js"

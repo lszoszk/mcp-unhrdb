@@ -33,7 +33,7 @@ app.use(express.json({ limit: '1mb' }));
 
 // Liveness probe (used by docker / nginx). No auth.
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', server: 'mcp-unhrdb', transport: 'streamable-http', api: config.API_BASE });
+  res.json({ status: 'ok', server: 'mcp-unhrdb', transport: 'streamable-http', paragraphsApi: config.API_BASE, recommendationsApi: config.UHRI_API_BASE });
 });
 
 // Optional bearer/X-API-Key gate. A no-op when MCP_AUTH_TOKEN is unset
@@ -72,7 +72,7 @@ app.delete('/mcp', methodNotAllowed);
 
 app.listen(PORT, HOST, () => {
   console.error(
-    `mcp-unhrdb (http) listening on http://${HOST}:${PORT}/mcp · API ${config.API_BASE} · ` +
-    `auth ${AUTH_TOKEN ? 'token-gated' : 'open (gate at proxy)'}`
+    `mcp-unhrdb (http) listening on http://${HOST}:${PORT}/mcp · paragraphs ${config.API_BASE} · ` +
+    `recommendations ${config.UHRI_API_BASE} · auth ${AUTH_TOKEN ? 'token-gated' : 'open (gate at proxy)'}`
   );
 });

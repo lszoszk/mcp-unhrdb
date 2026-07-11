@@ -15,6 +15,7 @@ const server = buildServer();
 const transport = new StdioServerTransport();
 await server.connect(transport);
 console.error(
-  `mcp-unhrdb (stdio) ready · API ${config.API_BASE} · key ${config.API_KEY ? 'set' : 'none'} · ` +
+  `mcp-unhrdb (stdio) ready · paragraphs ${config.API_BASE} (key ${config.API_KEY ? 'set' : 'none'}) · ` +
+  `recommendations ${config.UHRI_API_BASE} (key ${config.UHRI_API_KEY ? 'set' : 'none'}) · ` +
   `TLS ${config.INSECURE_TLS ? 'insecure (self-signed OK)' : 'verified'}`
 );

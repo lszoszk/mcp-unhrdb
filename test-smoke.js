@@ -21,5 +21,12 @@ console.log('\n--- lookup (SP, ¶10) ---\n' + c2.content[0].text.slice(0, 300));
 const c3 = await client.callTool({ name: 'lookup_by_citation', arguments: { citation: 'CEDAW/C/GC/30' } });
 console.log('\n--- lookup (doc only) ---\n' + c3.content[0].text.slice(0, 400));
 
+// --- UHRI recommendations corpus (second dataset) ---
+const f = await client.callTool({ name: 'list_uhri_facets', arguments: { kind: 'all' } });
+console.log('\n--- list_uhri_facets ---\n' + f.content[0].text.slice(0, 500));
+
+const rec = await client.callTool({ name: 'search_recommendations', arguments: { query: 'torture', countries: ['Poland'], bodies: ['CAT'], limit: 2 } });
+console.log('\n--- search_recommendations (Poland · CAT · "torture") ---\n' + rec.content[0].text.slice(0, 800));
+
 await client.close();
 process.exit(0);

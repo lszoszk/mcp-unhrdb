@@ -2,17 +2,29 @@
 
 [![MCP](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io) [![Node](https://img.shields.io/badge/Node-18%2B-brightgreen)](https://nodejs.org) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
-Model Context Protocol server for the **UN Human Rights Database** — a
-paragraph-level corpus of UN Treaty Body General Comments, individual-
-communication jurisprudence, and Special Procedures reports (≈203,000
-paragraphs across ≈4,900 documents, citable down to the paragraph number).
+Model Context Protocol server for **two UN human-rights corpora**, exposed as
+four read-only tools over one connector:
 
-It runs as a stdio process and is a thin wrapper over the existing UNHRDB
-HTTP API: it adds no index of its own, it just re-exposes the live search
-backend over MCP so any client (Claude Desktop, Claude Code, Cowork) can
-query the corpus natively.
+1. **UNHRDB paragraphs** — a paragraph-level corpus of UN Treaty Body General
+   Comments, individual-communication jurisprudence, and Special Procedures
+   reports (≈203,000 paragraphs across ≈4,900 documents, citable to the
+   paragraph number).
+2. **UHRI recommendations** — ≈267,000 recommendations and observations
+   addressed to individual UN Member States by the Universal Periodic Review,
+   Treaty Bodies and Special Procedures (2006–present), citable by UN document
+   symbol.
 
-Companion to the [UNHRD search interface](https://lszoszk.github.io/generalcomments/).
+The two corpora are **never blended** — each tool queries exactly one backend,
+so a recommendations search can't return a General Comment and vice versa. Ask
+in plain language ("search the *recommendations* for…" / "in *General Comments*
+only") and the tool descriptions route it.
+
+It runs as a stdio (or HTTP) process and is a thin wrapper over the live HTTP
+APIs: it adds no index of its own, it just re-exposes the search backends over
+MCP so any client (Claude Desktop, Claude Code, Cowork) can query them natively.
+
+Companion to the [UNHRD search interface](https://lszoszk.github.io/generalcomments/)
+and the [UHRI+ analytics dashboard](https://lszoszk.github.io/UnitedNations_recommendations/).
 
 > **Try it instantly — no token, no deployment.** The server ships pointed at
 > the live public API, so `npm install` and the Claude Desktop config below
@@ -21,14 +33,23 @@ Companion to the [UNHRD search interface](https://lszoszk.github.io/generalcomme
 
 ## Tools
 
+**Paragraph corpus** (General Comments / jurisprudence / Special Procedures):
+
 | Tool | Description |
 |---|---|
 | `search_paragraphs` | Full-text search with `scope` (gc / jur / sp / all), `committee` and `year` filters. Returns verbatim paragraphs with UN signature + ¶ number. |
 | `lookup_by_citation` | Resolve a citation such as `CRC/C/GC/25 ¶12` or `A/HRC/61/42 para 10` to its verbatim paragraph. Omit the ¶ number to get document metadata. |
 
-Every result is a **verbatim** UN paragraph with its signature and paragraph
-number — no paraphrase, no synthesised text — so answers stay citable to the
-original UN document.
+**UHRI recommendations corpus** (State-directed recommendations & observations):
+
+| Tool | Description |
+|---|---|
+| `search_recommendations` | Faceted full-text search over ≈267k recommendations. Filters: `query`, `countries`, `bodies`, `themes`, `affected_persons`, `sdgs`, `annotation_type`, `year_start`/`year_end`, `page`, `limit`. Returns each item verbatim with UN symbol + body + country + year + `annotation_id`. |
+| `list_uhri_facets` | List valid filter values (country names, body codes, regions, annotation types, year span). Call it first for exact spellings. |
+
+Every result is a **verbatim** UN paragraph or recommendation with its
+signature/symbol — no paraphrase, no synthesised text — so answers stay citable
+to the original UN document.
 
 ## Two transports
 
@@ -71,9 +92,11 @@ node test-smoke.js
 
 | Variable | Default | Notes |
 |---|---|---|
-| `UNHRDB_API_BASE` | `https://150.254.115.204/unhrdb-api/api` | Base URL of the UNHRDB API. Point at `…/unhrdb-mcp/api` to use the token-gated, independently rate-limited route (see [deploy/RUNBOOK.md](deploy/RUNBOOK.md)). |
+| `UNHRDB_API_BASE` | `https://150.254.115.204/unhrdb-api/api` | Base URL of the **paragraph** API. Point at `…/unhrdb-mcp/api` to use the token-gated, independently rate-limited route (see [deploy/RUNBOOK.md](deploy/RUNBOOK.md)). |
 | `UNHRDB_API_KEY` | _(empty)_ | Optional token sent as the `X-API-Key` header. Required by the hardened `/unhrdb-mcp/` route; ignored by the public `/unhrdb-api/` route. |
-| `UNHRDB_INSECURE_TLS` | `1` | `1` accepts the VM's self-signed certificate. Set to `0` once the API is behind a trusted certificate. The relaxed TLS is scoped to this server's own HTTPS agent — it does not weaken TLS globally. |
+| `UHRI_API_BASE` | `https://150.254.115.204/uhri-api/api` | Base URL of the **UHRI recommendations** API. Public route needs no key; co-located self-hosting uses `http://127.0.0.1:8001/api`. |
+| `UHRI_API_KEY` | _(empty)_ | Optional token for the UHRI API (`X-API-Key`). The public route ignores it. |
+| `UNHRDB_INSECURE_TLS` | `1` | `1` accepts the VM's self-signed certificate (applies to both APIs). Set to `0` once the APIs are behind a trusted certificate. The relaxed TLS is scoped to this server's own HTTPS agent — it does not weaken TLS globally. |
 
 ## Wire into Claude Desktop
 
@@ -130,13 +153,16 @@ endpoint is stateless (POST `/mcp`); `GET`/`DELETE` return 405.
 
 ## Notes & limits
 
-- Server-side pages are 20 results wide. `search_paragraphs` returns up to
-  `limit` (≤20) from the requested `page`; paginate with `page` for more.
+- `search_paragraphs` and `search_recommendations` return up to `limit` (≤20)
+  from the requested `page`; paginate with `page` for more.
 - `lookup_by_citation` matches on the **printed** paragraph number (¶N),
   falling back to internal index, so lettered sub-items resolve correctly.
-- This is a **0.1 prototype**: two read-only tools. Candidate next tools:
-  `get_document` (full text), `find_related` (embedding neighbours),
-  `get_metadata`.
+- `search_recommendations` accepts clean body codes (`CAT`, `CCPR`, `UPR`) and
+  country names as spelled by `list_uhri_facets`; multiple values in a filter
+  are OR-combined. `themes` / `affected_persons` / `sdgs` take exact long labels.
+- Four read-only tools over two corpora. Candidate next tools: `get_document`
+  (full paragraph text), `find_related` (embedding neighbours),
+  `lookup_recommendation` (by `annotation_id` or UN symbol).
 
 ## License
 

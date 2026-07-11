@@ -17,6 +17,7 @@ services:
       - HOST=127.0.0.1
       - PORT=8004
       - UNHRDB_API_BASE=${UNHRDB_API_BASE:-http://127.0.0.1:8002/api}
+      - UHRI_API_BASE=${UHRI_API_BASE:-http://127.0.0.1:8001/api}
       - UNHRDB_INSECURE_TLS=${UNHRDB_INSECURE_TLS:-0}
       - MCP_AUTH_TOKEN=${MCP_AUTH_TOKEN:-}
     mem_limit: 256m
