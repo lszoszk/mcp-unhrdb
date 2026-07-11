@@ -131,6 +131,25 @@ function formatRec(r) {
     `\n[annotation_id: ${r.AnnotationId}]`;
 }
 
+// One UHRI record in full detail (for lookup_recommendation): every label,
+// both the section path and the complete verbatim text.
+function formatRecFull(r) {
+  const lines = [`${r.Symbol || '(no UN document symbol)'} — ${_deprefix(r.AnnotationType) || 'record'}`];
+  const meta = [_deprefix(r.Body), (r.Countries || []).join(', '), (r.PublicationDate || '').slice(0, 10)]
+    .filter(Boolean).join(' · ');
+  if (meta) lines.push(meta);
+  const section = (r.SectionHeadings || []).filter(Boolean).join(' > ');
+  if (section) lines.push(`Section: ${section}`);
+  lines.push('', (r.TextPlainCleaned || r.Text || '').trim(), '');
+  const label = (name, arr) => (arr || []).length ? lines.push(`${name}: ${arr.join('; ')}`) : 0;
+  label('Themes', r.Themes);
+  label('Affected persons', r.AffectedPersons);
+  label('SDGs', r.Sdgs);
+  label('Regions', r.Regions);
+  lines.push(`[annotation_id: ${r.AnnotationId} · document_id: ${r.DocumentId} · symbol: ${r.Symbol || '—'}]`);
+  return lines.join('\n');
+}
+
 // Build a fresh McpServer with both tools registered. A new instance per
 // call keeps the HTTP transport's stateless mode safe (no shared session).
 export function buildServer() {
@@ -318,6 +337,31 @@ export function buildServer() {
         `Countries: ${countries.length} — call list_uhri_facets with kind="countries" for the full list.\n` +
         `Themes, affected_persons and SDGs are long free-text labels; pass exact strings to search_recommendations.`;
       return { content: [{ type: 'text', text }] };
+    }
+  );
+
+  server.registerTool(
+    'lookup_recommendation',
+    {
+      title: 'Fetch one UHRI recommendation by id',
+      description:
+        'Retrieve the full verbatim record for a single UHRI recommendation by its annotation_id (the UUID shown in search_recommendations results, e.g. "[annotation_id: 7ea1…]"). Returns the complete item — full text, UN document symbol, issuing body, country, date, themes, affected persons, SDGs. This reads the UHRI recommendations corpus; to resolve a General-Comment / jurisprudence / Special-Procedures citation, use lookup_by_citation instead.',
+      inputSchema: {
+        annotation_id: z.string().min(1).describe('The UHRI annotation_id (UUID) from a search_recommendations result.'),
+      },
+    },
+    async ({ annotation_id }) => {
+      let doc;
+      try {
+        doc = await uhriGet(`/data/record/${encodeURIComponent(annotation_id)}`);
+      } catch (e) {
+        return { isError: true, content: [{ type: 'text', text: `Could not fetch annotation_id "${annotation_id}": ${e.message}` }] };
+      }
+      const r = doc.record || doc;
+      if (!r || !r.AnnotationId) {
+        return { isError: true, content: [{ type: 'text', text: `No recommendation found with annotation_id "${annotation_id}".` }] };
+      }
+      return { content: [{ type: 'text', text: formatRecFull(r) }] };
     }
   );
 

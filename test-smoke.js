@@ -28,5 +28,11 @@ console.log('\n--- list_uhri_facets ---\n' + f.content[0].text.slice(0, 500));
 const rec = await client.callTool({ name: 'search_recommendations', arguments: { query: 'torture', countries: ['Poland'], bodies: ['CAT'], limit: 2 } });
 console.log('\n--- search_recommendations (Poland · CAT · "torture") ---\n' + rec.content[0].text.slice(0, 800));
 
+const annId = (rec.content[0].text.match(/annotation_id:\s*([0-9a-f-]{36})/i) || [])[1];
+if (annId) {
+  const one = await client.callTool({ name: 'lookup_recommendation', arguments: { annotation_id: annId } });
+  console.log(`\n--- lookup_recommendation (${annId.slice(0, 8)}…) ---\n` + one.content[0].text.slice(0, 500));
+}
+
 await client.close();
 process.exit(0);

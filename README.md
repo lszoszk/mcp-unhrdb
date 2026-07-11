@@ -45,6 +45,7 @@ and the [UHRI+ analytics dashboard](https://lszoszk.github.io/UnitedNations_reco
 | Tool | Description |
 |---|---|
 | `search_recommendations` | Faceted full-text search over ≈267k recommendations. Filters: `query`, `countries`, `bodies`, `themes`, `affected_persons`, `sdgs`, `annotation_type`, `year_start`/`year_end`, `page`, `limit`. Returns each item verbatim with UN symbol + body + country + year + `annotation_id`. |
+| `lookup_recommendation` | Fetch the full verbatim record for one recommendation by its `annotation_id` (from a search result) — complete text plus every theme / affected-person / SDG / region label. |
 | `list_uhri_facets` | List valid filter values (country names, body codes, regions, annotation types, year span). Call it first for exact spellings. |
 
 Every result is a **verbatim** UN paragraph or recommendation with its
@@ -160,9 +161,10 @@ endpoint is stateless (POST `/mcp`); `GET`/`DELETE` return 405.
 - `search_recommendations` accepts clean body codes (`CAT`, `CCPR`, `UPR`) and
   country names as spelled by `list_uhri_facets`; multiple values in a filter
   are OR-combined. `themes` / `affected_persons` / `sdgs` take exact long labels.
-- Four read-only tools over two corpora. Candidate next tools: `get_document`
-  (full paragraph text), `find_related` (embedding neighbours),
-  `lookup_recommendation` (by `annotation_id` or UN symbol).
+- Five read-only tools over two corpora. `lookup_recommendation` currently
+  resolves an `annotation_id`; lookup by UN **symbol** needs a `symbol` filter
+  on the records API (pending a backend pass). Candidate next tools:
+  `get_document` (full paragraph text), `find_related` (embedding neighbours).
 
 ## License
 
