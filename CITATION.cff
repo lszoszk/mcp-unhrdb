@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "mcp-unhrdb: MCP server for UNHRDB and UHRI+"
+message: "If this connector supports your research workflow, please cite the software. Cite the underlying datasets and original UN documents separately."
+type: software
+authors:
+  - family-names: "Szoszkiewicz"
+    given-names: "Łukasz"
+    email: "l.szoszkiewicz@amu.edu.pl"
+    affiliation: "Adam Mickiewicz University, Poznań"
+    orcid: "https://orcid.org/0000-0001-6671-2893"
+abstract: "A Model Context Protocol server exposing source-exact search and lookup tools for the UNHRDB paragraph corpus and UHRI recommendations corpus."
+keywords:
+  - "Model Context Protocol"
+  - "human rights"
+  - "United Nations"
+  - "legal information retrieval"
+  - "research software"
+license: "PolyForm-Noncommercial-1.0.0"
+license-url: "https://polyformproject.org/licenses/noncommercial/1.0.0/"
+repository-code: "https://github.com/lszoszk/mcp-unhrdb"
+version: "0.3.1"
+date-released: "2026-07-12"

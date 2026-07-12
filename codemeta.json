@@ -1,0 +1,21 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "type": "SoftwareSourceCode",
+  "name": "mcp-unhrdb",
+  "description": "MCP server for source-exact search and lookup across UNHRDB and UHRI+.",
+  "codeRepository": "https://github.com/lszoszk/mcp-unhrdb",
+  "version": "0.3.1",
+  "datePublished": "2026-07-12",
+  "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+  "applicationCategory": "Legal research software",
+  "programmingLanguage": "JavaScript",
+  "keywords": ["Model Context Protocol", "human rights", "United Nations", "legal information retrieval"],
+  "author": {
+    "type": "Person",
+    "givenName": "Łukasz",
+    "familyName": "Szoszkiewicz",
+    "email": "l.szoszkiewicz@amu.edu.pl",
+    "affiliation": {"type": "Organization", "name": "Adam Mickiewicz University, Poznań"},
+    "id": "https://orcid.org/0000-0001-6671-2893"
+  }
+}

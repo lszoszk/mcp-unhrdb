@@ -1,6 +1,6 @@
 {
   "name": "mcp-unhrdb",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "MCP server for two UN human-rights corpora: paragraph-level search over Treaty Body General Comments, jurisprudence and Special Procedures reports, plus the UHRI dataset of ~267k recommendations addressed to States.",
   "type": "module",
   "bin": {
@@ -18,5 +18,11 @@
     "express": "^4.21.2",
     "zod": "^3.23.8"
   },
-  "license": "MIT"
+  "author": "Łukasz Szoszkiewicz",
+  "homepage": "https://github.com/lszoszk/mcp-unhrdb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lszoszk/mcp-unhrdb.git"
+  },
+  "license": "SEE LICENSE IN LICENSE"
 }

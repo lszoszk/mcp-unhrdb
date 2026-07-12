@@ -1,6 +1,6 @@
 # mcp-unhrdb
 
-[![MCP](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io) [![Node](https://img.shields.io/badge/Node-18%2B-brightgreen)](https://nodejs.org) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
+[![MCP](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io) [![Node](https://img.shields.io/badge/Node-18%2B-brightgreen)](https://nodejs.org) [![License: PolyForm Noncommercial](https://img.shields.io/badge/license-PolyForm%20Noncommercial-blue.svg)](LICENSE)
 
 Model Context Protocol server for **two UN human-rights corpora**, exposed as
 four read-only tools over one connector:
@@ -168,4 +168,13 @@ endpoint is stateless (POST `/mcp`); `GET`/`DELETE` return 405.
 
 ## License
 
-MIT.
+PolyForm Noncommercial 1.0.0. Research, education, non-profit, and personal
+use are permitted; commercial use requires a separate licence. See
+[`LICENSE`](LICENSE). The UNHRDB and UHRI corpora have separate terms.
+
+## Citation
+
+> Szoszkiewicz, Ł. (2026). *mcp-unhrdb: MCP server for UNHRDB and UHRI+*
+> (Version 0.3.1) [Computer software].
+
+Machine-readable citation metadata is available in [`CITATION.cff`](CITATION.cff).
