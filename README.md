@@ -3,13 +3,13 @@
 [![MCP](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io) [![Node](https://img.shields.io/badge/Node-18%2B-brightgreen)](https://nodejs.org) [![License: PolyForm Noncommercial](https://img.shields.io/badge/license-PolyForm%20Noncommercial-blue.svg)](LICENSE)
 
 Model Context Protocol server for **two UN human-rights corpora**, exposed as
-four read-only tools over one connector:
+five read-only tools over one connector:
 
 1. **UNHRDB paragraphs** — a paragraph-level corpus of UN Treaty Body General
    Comments, individual-communication jurisprudence, and Special Procedures
    reports (≈203,000 paragraphs across ≈4,900 documents, citable to the
    paragraph number).
-2. **UHRI recommendations** — ≈267,000 recommendations and observations
+2. **UHRI recommendations** — more than 270,000 recommendations and observations
    addressed to individual UN Member States by the Universal Periodic Review,
    Treaty Bodies and Special Procedures (2006–present), citable by UN document
    symbol.
@@ -26,10 +26,17 @@ MCP so any client (Claude Desktop, Claude Code, Cowork) can query them natively.
 Companion to the [UNHRD search interface](https://lszoszk.github.io/generalcomments/)
 and the [UHRI+ analytics dashboard](https://lszoszk.github.io/UnitedNations_recommendations/).
 
-> **Try it instantly — no token, no deployment.** The server ships pointed at
-> the live public API, so `npm install` and the Claude Desktop config below
-> are all you need to start querying the corpus. (Self-hosting your own
-> token-gated route is optional — see [deploy/RUNBOOK.md](deploy/RUNBOOK.md).)
+> **Not a developer? Start here:** [lszoszk.github.io/UnitedNations_recommendations/ai.html](https://lszoszk.github.io/UnitedNations_recommendations/ai.html) —
+> a one-page guide you can paste into your AI assistant and let it connect you.
+> The server is hosted; there is nothing to install.
+>
+> **Hosted endpoint (Streamable HTTP, no token):** `https://150.254.115.204/unhrdb-mcp-rpc/mcp`
+> Add it as a custom connector in Claude (Customize → Connectors → Add custom
+> connector), in ChatGPT (Developer mode → connector URL), or in Claude Code:
+> `claude mcp add --transport http unhrdb https://150.254.115.204/unhrdb-mcp-rpc/mcp --scope user`.
+>
+> The local install below is for people who want to run the server themselves
+> (Claude Desktop stdio, development, self-hosting).
 
 ## Tools
 
@@ -44,7 +51,7 @@ and the [UHRI+ analytics dashboard](https://lszoszk.github.io/UnitedNations_reco
 
 | Tool | Description |
 |---|---|
-| `search_recommendations` | Faceted full-text search over ≈267k recommendations. Filters: `query`, `countries`, `bodies`, `themes`, `affected_persons`, `sdgs`, `annotation_type`, `year_start`/`year_end`, `page`, `limit`. Returns each item verbatim with UN symbol + body + country + year + `annotation_id`. |
+| `search_recommendations` | Faceted full-text search over 270k+ recommendations. Filters: `query`, `countries`, `bodies`, `themes`, `affected_persons`, `sdgs`, `annotation_type`, `year_start`/`year_end`, `page`, `limit`. Returns each item verbatim with UN symbol + body + country + year + `annotation_id`. |
 | `lookup_recommendation` | Fetch the full verbatim record for one recommendation by its `annotation_id` (from a search result) — complete text plus every theme / affected-person / SDG / region label. |
 | `list_uhri_facets` | List valid filter values (country names, body codes, regions, annotation types, year span). Call it first for exact spellings. |
 
@@ -97,7 +104,7 @@ node test-smoke.js
 | `UNHRDB_API_KEY` | _(empty)_ | Optional token sent as the `X-API-Key` header. Required by the hardened `/unhrdb-mcp/` route; ignored by the public `/unhrdb-api/` route. |
 | `UHRI_API_BASE` | `https://150.254.115.204/uhri-api/api` | Base URL of the **UHRI recommendations** API. Public route needs no key; co-located self-hosting uses `http://127.0.0.1:8001/api`. |
 | `UHRI_API_KEY` | _(empty)_ | Optional token for the UHRI API (`X-API-Key`). The public route ignores it. |
-| `UNHRDB_INSECURE_TLS` | `1` | `1` accepts the VM's self-signed certificate (applies to both APIs). Set to `0` once the APIs are behind a trusted certificate. The relaxed TLS is scoped to this server's own HTTPS agent — it does not weaken TLS globally. |
+| `UNHRDB_INSECURE_TLS` | `0` | `1` accepts an untrusted certificate on the API host (applies to both APIs). The public APIs have carried a Let's Encrypt certificate since September 2026, so the default is now strict; set `1` only for a self-hosted API behind a self-signed cert. The relaxed TLS is scoped to this server's own HTTPS agent — it does not weaken TLS globally. |
 
 ## Wire into Claude Desktop
 
@@ -128,13 +135,13 @@ Use `-s user` for all your projects, or `-s local` for the current one. To
 point at a self-hosted token-gated route, add an `env` block:
 `{"UNHRDB_API_BASE":"https://<host>/unhrdb-mcp/api","UNHRDB_API_KEY":"<token>"}`.
 
-Restart Claude Desktop; the two tools appear under the 🔌 menu.
+Restart Claude Desktop; the five tools appear under the 🔌 menu.
 
 ## Remote / HTTP hosting
 
 Remote clients (Claude Cowork, claude.ai, the connector registry) connect to a
 **URL**, not a local process — so the server has to be hosted. The HTTP entry
-(`src/http.js`) serves the same two tools over MCP's Streamable HTTP transport.
+(`src/http.js`) serves the same five tools over MCP's Streamable HTTP transport.
 
 Run it with Docker (host networking, so it reaches a co-located UNHRDB API on
 `127.0.0.1:8002` and listens on `127.0.0.1:8004`):

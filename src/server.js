@@ -16,7 +16,9 @@
  *   UNHRDB_API_KEY      optional token sent as X-API-Key to the UNHRDB API
  *   UHRI_API_BASE       default https://150.254.115.204/uhri-api/api
  *   UHRI_API_KEY        optional token for the UHRI API (public route needs none)
- *   UNHRDB_INSECURE_TLS "1" (default) accepts the VM's self-signed cert
+ *   UNHRDB_INSECURE_TLS "0" (default) — strict TLS; the public APIs carry a
+ *                       Let's Encrypt certificate. Set "1" only for a self-hosted
+ *                       API behind a self-signed cert.
  */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
@@ -31,7 +33,7 @@ const API_KEY = process.env.UNHRDB_API_KEY || '';
 // is not CORS-bound, so that API's browser-only ACAO pin is irrelevant here.
 const UHRI_API_BASE = (process.env.UHRI_API_BASE || 'https://150.254.115.204/uhri-api/api').replace(/\/$/, '');
 const UHRI_API_KEY = process.env.UHRI_API_KEY || '';
-const INSECURE_TLS = (process.env.UNHRDB_INSECURE_TLS ?? '1') === '1';
+const INSECURE_TLS = (process.env.UNHRDB_INSECURE_TLS ?? '0') === '1';
 
 export const config = { API_BASE, API_KEY, UHRI_API_BASE, UHRI_API_KEY, INSECURE_TLS };
 
