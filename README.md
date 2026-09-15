@@ -157,7 +157,10 @@ that exposes it at `https://<host>/unhrdb-mcp-rpc/mcp`. Clients authenticate
 with `Authorization: Bearer <MCP_AUTH_TOKEN>`.
 
 Add that URL as a custom remote connector where your client supports one. The
-endpoint is stateless (POST `/mcp`); `GET`/`DELETE` return 405.
+endpoint is stateless (POST `/mcp`). A browser `GET` (Accept: text/html) gets a
+short notice page pointing at the guide — so a person who pastes the address
+into a browser to "check it" is not met with a JSON error; MCP clients still
+receive the 405 the Streamable HTTP spec requires for `GET`/`DELETE`.
 
 ## Notes & limits
 
