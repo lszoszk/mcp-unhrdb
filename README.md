@@ -38,6 +38,45 @@ and the [UHRI+ analytics dashboard](https://lszoszk.github.io/UnitedNations_reco
 > The local install below is for people who want to run the server themselves
 > (Claude Desktop stdio, development, self-hosting).
 
+## Skills for Claude
+
+The **`unhrdb` plugin** bundles the hosted connector with three skills that
+teach Claude how to research UN human rights law properly: pick the right kind
+of source, search the way the index works, quote verbatim, pin every statement
+to a UN symbol and paragraph, and check what it cites.
+
+| Skill | Use it to |
+|---|---|
+| [`un-human-rights-research`](plugins/unhrdb/skills/un-human-rights-research/SKILL.md) | Answer a question of UN human rights law from General Comments, treaty-body Views, Special Procedures reports and recommendations, with verbatim, paragraph-cited text. |
+| [`un-citation-check`](plugins/unhrdb/skills/un-citation-check/SKILL.md) | Verify the UN citations in a draft, brief or AI answer: does the cited paragraph exist, and does it say what is claimed? Returns a verification table. |
+| [`treaty-body-case-law`](plugins/unhrdb/skills/treaty-body-case-law/SKILL.md) | Find and analyse decisions on individual complaints: outcome from the operative paragraph, Committee vs parties, separate opinions, citation. |
+
+For the **recommendations to States** (UHRI), use the four UHRI+ skills —
+`uhri-plus`, `uhri-plus-country-brief`, `uhri-plus-legal-grounding`,
+`uhri-plus-dashboard-link` — published with the dashboard:
+[UHRI+ skills](https://lszoszk.github.io/UnitedNations_recommendations/skills/README.md). Both sets work over the same connector.
+
+**Claude Code** — install the plugin (connector + skills) from this repository:
+
+```
+/plugin marketplace add lszoszk/mcp-unhrdb
+/plugin install unhrdb@mcp-unhrdb
+```
+
+The skills then run on their own when a question calls for them, or by name:
+`/unhrdb:un-citation-check`.
+
+**claude.ai** — add the plugin under *Customize → Plugins → Add marketplace*
+with `https://github.com/lszoszk/mcp-unhrdb`, then connect the UNHRDB
+connector on the plugin's Connectors tab. Alternatively, add the connector
+yourself (see above) and upload the skills one by one under
+*Customize → Skills*: download the `.zip` files from the
+[latest release](https://github.com/lszoszk/mcp-unhrdb/releases/latest) or
+build them with `./scripts/package-skills.sh`.
+
+If you already added the connector by hand, the plugin's copy is skipped
+(same address) and the skills use yours.
+
 ## Tools
 
 **Paragraph corpus** (General Comments / jurisprudence / Special Procedures):

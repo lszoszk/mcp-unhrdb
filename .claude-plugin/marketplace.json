@@ -1,0 +1,17 @@
+{
+  "name": "mcp-unhrdb",
+  "owner": {
+    "name": "Łukasz Szoszkiewicz",
+    "email": "l.szoszkiewicz@amu.edu.pl"
+  },
+  "description": "UN human rights research for Claude: the UNHRDB connector and skills for verbatim, paragraph-cited UN sources.",
+  "plugins": [
+    {
+      "name": "unhrdb",
+      "source": "./plugins/unhrdb",
+      "description": "UNHRDB connector plus skills for researching UN human rights law, checking UN citations and treaty-body case law.",
+      "category": "research",
+      "tags": ["human-rights", "united-nations", "legal-research", "mcp"]
+    }
+  ]
+}
