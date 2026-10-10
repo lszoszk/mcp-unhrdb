@@ -70,9 +70,7 @@ The skills then run on their own when a question calls for them, or by name:
 with `https://github.com/lszoszk/mcp-unhrdb`, then connect the UNHRDB
 connector on the plugin's Connectors tab. Alternatively, add the connector
 yourself (see above) and upload the skills one by one under
-*Customize → Skills*: download the `.zip` files from the
-[latest release](https://github.com/lszoszk/mcp-unhrdb/releases/latest) or
-build them with `./scripts/package-skills.sh`.
+*Customize → Skills*, as `.zip` files built with `./scripts/package-skills.sh`.
 
 If you already added the connector by hand, the plugin's copy is skipped
 (same address) and the skills use yours.
