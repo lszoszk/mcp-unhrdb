@@ -2,7 +2,7 @@
   "name": "unhrdb",
   "displayName": "UNHRDB — UN Human Rights Database",
   "version": "0.1.0",
-  "description": "Verbatim, paragraph-cited UN human rights law for Claude: the UNHRDB connector (General Comments, treaty-body Views, Special Procedures reports, UHRI recommendations to States) plus four research skills.",
+  "description": "Verbatim, paragraph-cited UN human rights law for Claude: the UNHRDB connector (General Comments, treaty-body Views, Special Procedures reports, UHRI recommendations to States) plus three research skills: UN human rights research, UN citation checking, treaty-body case law. Skills for the UHRI recommendations are published with UHRI+.",
   "author": {
     "name": "Łukasz Szoszkiewicz",
     "email": "l.szoszkiewicz@amu.edu.pl",

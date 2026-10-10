@@ -9,7 +9,7 @@
     {
       "name": "unhrdb",
       "source": "./plugins/unhrdb",
-      "description": "UNHRDB connector plus skills for researching UN human rights law, checking UN citations, treaty-body case law and UHRI recommendations to States.",
+      "description": "UNHRDB connector plus skills for researching UN human rights law, checking UN citations and treaty-body case law.",
       "category": "research",
       "tags": ["human-rights", "united-nations", "legal-research", "mcp"]
     }

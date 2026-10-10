@@ -22,7 +22,7 @@ Keep their legal character apart, and say which one you are relying on:
 - **General Comments / General Recommendations** (`scope: "gc"`): the treaty body's authoritative interpretation of its treaty. Best source for "what does article X require".
 - **Decisions on individual communications** (`scope: "jur"`): the treaty applied to a case. Views on the merits find a violation or no violation; admissibility decisions say nothing on the merits. For case-law questions use the `treaty-body-case-law` skill.
 - **Special Procedures reports** (`scope: "sp"`): the independent expert opinion of a mandate-holder. Persuasive, not binding; never present it as what a treaty requires.
-- **UHRI recommendations**: what a body asked a specific State to do. Evidence of practice and concerns about a country, not interpretation of the treaty. Use the `uhri-recommendations` skill.
+- **UHRI recommendations**: what a body asked a specific State to do. Evidence of practice and concerns about a country, not interpretation of the treaty. Use the UHRI+ skills (`uhri-plus`, `uhri-plus-country-brief`) when they are installed: https://lszoszk.github.io/UnitedNations_recommendations/skills/README.md
 
 Committee codes: CCPR (ICCPR), CESCR (ICESCR), CERD, CEDAW, CAT, CRC, CMW, CRPD, CED.
 

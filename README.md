@@ -40,7 +40,7 @@ and the [UHRI+ analytics dashboard](https://lszoszk.github.io/UnitedNations_reco
 
 ## Skills for Claude
 
-The **`unhrdb` plugin** bundles the hosted connector with four skills that
+The **`unhrdb` plugin** bundles the hosted connector with three skills that
 teach Claude how to research UN human rights law properly: pick the right kind
 of source, search the way the index works, quote verbatim, pin every statement
 to a UN symbol and paragraph, and check what it cites.
@@ -50,7 +50,11 @@ to a UN symbol and paragraph, and check what it cites.
 | [`un-human-rights-research`](plugins/unhrdb/skills/un-human-rights-research/SKILL.md) | Answer a question of UN human rights law from General Comments, treaty-body Views, Special Procedures reports and recommendations, with verbatim, paragraph-cited text. |
 | [`un-citation-check`](plugins/unhrdb/skills/un-citation-check/SKILL.md) | Verify the UN citations in a draft, brief or AI answer: does the cited paragraph exist, and does it say what is claimed? Returns a verification table. |
 | [`treaty-body-case-law`](plugins/unhrdb/skills/treaty-body-case-law/SKILL.md) | Find and analyse decisions on individual complaints: outcome from the operative paragraph, Committee vs parties, separate opinions, citation. |
-| [`uhri-recommendations`](plugins/unhrdb/skills/uhri-recommendations/SKILL.md) | Search recommendations to States (UPR, treaty bodies, Special Procedures) by country, body, theme and year, with careful counts. |
+
+For the **recommendations to States** (UHRI), use the four UHRI+ skills —
+`uhri-plus`, `uhri-plus-country-brief`, `uhri-plus-legal-grounding`,
+`uhri-plus-dashboard-link` — published with the dashboard:
+[UHRI+ skills](https://lszoszk.github.io/UnitedNations_recommendations/skills/README.md). Both sets work over the same connector.
 
 **Claude Code** — install the plugin (connector + skills) from this repository:
 
