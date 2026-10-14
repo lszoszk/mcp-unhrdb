@@ -7,7 +7,7 @@ five read-only tools over one connector:
 
 1. **UNHRDB paragraphs** — a paragraph-level corpus of UN Treaty Body General
    Comments, individual-communication jurisprudence, and Special Procedures
-   reports (≈203,000 paragraphs across ≈4,900 documents, citable to the
+   reports (≈326,000 paragraphs across ≈6,150 documents, citable to the
    paragraph number).
 2. **UHRI recommendations** — more than 270,000 recommendations and observations
    addressed to individual UN Member States by the Universal Periodic Review,
