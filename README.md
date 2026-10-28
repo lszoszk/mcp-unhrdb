@@ -75,6 +75,32 @@ yourself (see above) and upload the skills one by one under
 If you already added the connector by hand, the plugin's copy is skipped
 (same address) and the skills use yours.
 
+### Quote guard (Claude Code)
+
+The plugin also installs a **quote guard**, two hooks that stop Claude from
+putting words in a source's mouth. In a turn where Claude used the UNHRDB
+connector or one of the skills, every quotation of five or more words that sits
+next to a citation (a UN symbol, ¶, §, para., a General Comment number, a
+communication number, *X v. Y*, a page) must appear word for word in what a tool
+actually returned in the session, or in your own messages. If it does not, the
+reply goes back to Claude with the list, and Claude fetches the exact text,
+paraphrases without quotation marks, or tags the line `[unverified]`. WebFetch and
+WebSearch results are marked as summaries, because they are: a small model writes
+them, and their "quotations" can be paraphrases.
+
+Replayed over 118 earlier research sessions, the guard stopped 16 of 107 turns.
+About half the flags were real: five quotations of General Comments and Views that
+were altered without an ellipsis or attributed to the wrong speaker, and several
+quoted from pages that were never fetched in full. It ignores quotation marks
+without a nearby citation, blockquotes without quotation marks (proposed wording)
+and Polish-language quotations.
+
+It needs `python3` on the PATH and runs only in Claude Code (terminal, desktop
+Code tab, IDEs). To switch it off, set `UNHRDB_QUOTE_GUARD=off`. Tests:
+`python3 -m unittest plugins/unhrdb/hooks/test_quote_guard.py`. The design follows
+the quotation hook in Daniel Epps's
+[legal-research-skills](https://github.com/danepps/legal-research-skills) (MIT).
+
 ## Tools
 
 **Paragraph corpus** (General Comments / jurisprudence / Special Procedures):
